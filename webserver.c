@@ -45,6 +45,10 @@ int main() {
 	}
 	printf("server listening for connections\n");
 
+	// Create client address
+	struct sockaddr_in client_addr;
+	int client_addrlen = sizeof(client_addr);
+
 	for (;;) {
         	// Accept incoming connections
         	int newsockfd = accept(sockfd, (struct sockaddr *)&host_addr,
@@ -55,12 +59,26 @@ int main() {
         	}
         	printf("connection accepted\n");
 
+		// Get client address
+        	int sockn = getsockname(newsockfd, (struct sockaddr *)&client_addr,
+                                (socklen_t *)&client_addrlen);
+        	if (sockn < 0) {
+            		perror("webserver (getsockname)");
+            		continue;
+        	}
+
 		// Read from the socket
         	int valread = read(newsockfd, buffer, BUFFER_SIZE);
         	if (valread < 0) {
             		perror("webserver (read)");
             		continue;
         	}
+
+		// Read the request
+        	char method[BUFFER_SIZE], uri[BUFFER_SIZE], version[BUFFER_SIZE];
+        	sscanf(buffer, "%s %s %s", method, uri, version);
+        	printf("[%s:%u] %s %s %s\n", inet_ntoa(client_addr.sin_addr),
+               		ntohs(client_addr.sin_port), method, version, uri);
 
 		// Write to the socket
         	int valwrite = write(newsockfd, resp, strlen(resp));
