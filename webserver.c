@@ -13,7 +13,7 @@ int main() {
     	char resp[] = "HTTP/1.0 200 OK\r\n"
                   "Server: webserver-c\r\n"
                   "Content-type: text/html\r\n\r\n"
-                  "<html>hello, world</html>\r\n";	
+                  "<html>hello, world</html>\r\n";
 
 	// Create a socket
 	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -60,10 +60,10 @@ int main() {
         	printf("connection accepted\n");
 
 		// Get client address
-        	int sockn = getsockname(newsockfd, (struct sockaddr *)&client_addr,
+        	int peern = getpeername(newsockfd, (struct sockaddr *)&client_addr,
                                 (socklen_t *)&client_addrlen);
-        	if (sockn < 0) {
-            		perror("webserver (getsockname)");
+        	if (peern < 0) {
+            		perror("webserver (getpeername)");
             		continue;
         	}
 
