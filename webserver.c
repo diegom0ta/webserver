@@ -13,7 +13,7 @@ int main() {
     	char resp[] = "HTTP/1.0 200 OK\r\n"
                   "Server: webserver-c\r\n"
                   "Content-type: text/html\r\n\r\n"
-                  "<html>hello, world</html>\r\n";
+                  "<html>Hi Dude!</html>\r\n";
 
 	// Create a socket
 	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -33,7 +33,7 @@ int main() {
 
 	// Bind the socket to the address
 	if (bind(sockfd, (struct sockaddr *)&host_addr, host_addrlen) != 0) {
-        	perror("webserver (bind)");
+        	perror("webserver(bind)");
         	return 1;
 	}
 	printf("socket successfully bound to address\n");
